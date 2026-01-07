@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+    <h1>Your Projects</h1>
+
+    <ul>
+         {% for project in projects %}
+            <li>{{ project.name }}</li>
+        {% empty %}
+            <li>No projects yet.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
