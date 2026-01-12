@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{{ project.name }}</title>
+</head>
+<body>
+  <p><a href="{% url 'dashboard' %}">← Back to dashboard</a></p>
+
+  <h1>{{ project.name }}</h1>
+  <p>{{ project.description }}</p>
+
+  <h2>Create a task</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Add Task</button>
+</form>
+
+<hr>
+  <h2>Tasks</h2>
+  <ul>
+    {% for task in tasks %}
+      <li>
+        <strong>{{ task.title }}</strong> — {{ task.get_status_display }} ({{ task.get_priority_display }})
+      </li>
+    {% empty %}
+      <li>No tasks in this project yet.</li>
+    {% endfor %}
+  </ul>
+</body>
+</html>
