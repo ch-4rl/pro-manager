@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{{ task.title }}</title>
+</head>
+<body>
+  <p><a href="{% url 'project_detail' task.project.id %}">← Back to project</a></p>
+
+  <h1>{{ task.title }}</h1>
+  <p><strong>Status:</strong> {{ task.get_status_display }}</p>
+  <p><strong>Priority:</strong> {{ task.get_priority_display }}</p>
+
+  {% if task.due_date %}
+    <p><strong>Due:</strong> {{ task.due_date }}</p>
+  {% endif %}
+
+  {% if task.description %}
+    <p>{{ task.description }}</p>
+  {% endif %}
+
+  <hr>
+
+  <h2>Add a comment</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Post Comment</button>
+  </form>
+
+  <hr>
+
+  <h2>Comments</h2>
+  <ul>
+    {% for c in comments %}
+      <li>
+        <strong>{{ c.author.username }}</strong> ({{ c.created_at }})<br>
+        {{ c.body }}
+      </li>
+    {% empty %}
+      <li>No comments yet.</li>
+    {% endfor %}
+  </ul>
+</body>
+</html>
