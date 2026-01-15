@@ -21,7 +21,10 @@
   <ul>
     {% for task in tasks %}
       <li>
-        <strong>{{ task.title }}</strong> — {{ task.get_status_display }} ({{ task.get_priority_display }})
+        <a href="{% url 'task_detail' task.id %}">
+        <strong>{{ task.title }}</strong> 
+        </a>
+        — {{ task.get_status_display }} ({{ task.get_priority_display }})
       </li>
     {% empty %}
       <li>No tasks in this project yet.</li>
