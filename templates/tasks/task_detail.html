@@ -2,6 +2,15 @@
 <html>
 <head>
   <title>{{ task.title }}</title>
+<h2>Update Status</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ status_form.as_p }}
+  <button type="submit" name="status_submit">Update Status</button>
+</form>
+
+<hr>
+
 </head>
 <body>
   <p><a href="{% url 'project_detail' task.project.id %}">← Back to project</a></p>

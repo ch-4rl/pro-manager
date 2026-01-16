@@ -6,6 +6,11 @@ class TaskForm(forms.ModelForm):
         model = Task
         fields = ["title", "description", "status", "priority", "due_date"]
 
+class TaskStatusForm(forms.ModelForm):
+    class Meta:
+        model = Task
+        fields = ["status"]            
+
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment     
@@ -13,3 +18,4 @@ class CommentForm(forms.ModelForm):
         widgets = {
             "body": forms.Textarea(attrs={"rows": 3}),
         }  
+
