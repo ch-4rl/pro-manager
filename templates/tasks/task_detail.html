@@ -2,6 +2,15 @@
 <html>
 <head>
   <title>{{ task.title }}</title>
+
+  <p>
+  <a href="{% url 'edit_task' task.id %}">✏️ Edit task</a>
+</p>
+
+<p>
+  <a href="{% url 'delete_task_confirm' task.id %}">🗑️ Delete task</a>
+</p>
+
 <h2>Update Status</h2>
 <form method="post">
   {% csrf_token %}

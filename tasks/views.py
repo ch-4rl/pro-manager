@@ -4,6 +4,7 @@ from django.views.decorators.http import require_POST
 
 from .models import Task
 from .forms import CommentForm, TaskStatusForm
+from .forms import TaskForm
 
 @login_required(login_url="/admin/login/")
 def task_detail(request, task_id):
@@ -57,3 +58,43 @@ def update_task_status(request, task_id):
         task.save()
 
     return redirect("project_detail", project_id=task.project.id) 
+
+@login_required(login_url="/admin/login/")
+def edit_task(request, task_id):
+    task = get_object_or_404(Task, id=task_id)
+
+    # Permission: only project owner can edit
+    if task.project.owner != request.user:
+        return redirect("dashboard")
+
+    if request.method == "POST":
+        form = TaskForm(request.POST, instance=task)
+        if form.is_valid():
+            form.save()
+            return redirect("task_detail", task_id=task.id)
+    else:
+        form = TaskForm(instance=task)
+
+    return render(request, "tasks/edit_task.html", {"task": task, "form": form})
+
+@login_required(login_url="/admin/login/")
+def delete_task_confirm(request, task_id):
+    task = get_object_or_404(Task, id=task_id)
+
+    if task.project.owner != request.user:
+        return redirect("dashboard")
+
+    return render(request, "tasks/delete_task_confirm.html", {"task": task})
+
+
+@require_POST
+@login_required(login_url="/admin/login/")
+def delete_task(request, task_id):
+    task = get_object_or_404(Task, id=task_id)
+
+    if task.project.owner != request.user:
+        return redirect("dashboard")
+
+    project_id = task.project.id
+    task.delete()
+    return redirect("project_detail", project_id=project_id)
