@@ -18,17 +18,31 @@
 
 <hr>
   <h2>Tasks</h2>
-  <ul>
-    {% for task in tasks %}
-      <li>
-        <a href="{% url 'task_detail' task.id %}">
-        <strong>{{ task.title }}</strong> 
-        </a>
-        — {{ task.get_status_display }} ({{ task.get_priority_display }})
-      </li>
-    {% empty %}
-      <li>No tasks in this project yet.</li>
-    {% endfor %}
-  </ul>
+ <ul>
+  {% for task in tasks %}
+    <li>
+      <a href="{% url 'task_detail' task.id %}">
+        <strong>{{ task.title }}</strong>
+      </a>
+
+      <form method="post" action="{% url 'update_task_status' task.id %}" style="display:inline;">
+        {% csrf_token %}
+        <select name="status">
+          {% for value,label in task.STATUS_CHOICES %}
+            <option value="{{ value }}" {% if task.status == value %}selected{% endif %}>
+              {{ label }}
+            </option>
+          {% endfor %}
+        </select>
+        <button type="submit">Update</button>
+      </form>
+
+      ({{ task.get_priority_display }})
+    </li>
+  {% empty %}
+    <li>No tasks in this project yet.</li>
+  {% endfor %}
+</ul>
+
 </body>
 </html>
