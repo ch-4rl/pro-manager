@@ -5,6 +5,8 @@
 </head>
 <body>
   <h1>Your Projects</h1>
+<p><a href="{% url 'create_project' %}">+ New Project</a></p>
+
 
   <ul>
     {% for project in projects %}

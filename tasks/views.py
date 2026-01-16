@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Task
 from .forms import CommentForm
 
-@login_required
+@login_required(login_url="/admin/login/")
 def task_detail(request, task_id):
     task = get_object_or_404(Task, id=task_id)
 
