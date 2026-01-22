@@ -1,0 +1,74 @@
+/* ---- Core palette ---- */
+:root {
+  --pm-purple: #a72cee;
+  --pm-purple-dark: #671292;
+  --pm-black: #111111;
+  --pm-white: #ffffff;
+  --pm-gray: #f8f9fab7;
+}
+
+/* ---- Base ---- */
+body {
+  background-color: var(--pm-white);
+  color: var(--pm-black);
+}
+
+/* ---- Navbar ---- */
+.navbar {
+  background-color: var(--pm-black) !important;
+}
+
+.navbar-brand {
+  color: var(--pm-purple) !important;
+  font-weight: 600;
+}
+
+.navbar-text {
+  color: var(--pm-white) !important;
+}
+
+/* ---- Buttons ---- */
+.btn-primary,
+.btn-success {
+  background-color: var(--pm-purple);
+  border-color: var(--pm-purple);
+}
+
+.btn-primary:hover,
+.btn-success:hover {
+  background-color: var(--pm-purple-dark);
+  border-color: var(--pm-purple-dark);
+}
+
+.btn-outline-primary {
+  color: var(--pm-purple);
+  border-color: var(--pm-purple);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--pm-purple);
+  color: white;
+}
+
+/* ---- Links ---- */
+a {
+  color: var(--pm-purple);
+}
+
+a:hover {
+  color: var(--pm-purple-dark);
+}
+
+/* ---- Cards ---- */
+.card {
+  background-color: var(--pm-white);
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+}
+
+/* ---- Forms ---- */
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--pm-purple);
+  box-shadow: 0 0 0 0.15rem rgba(111, 66, 193, 0.25);
+}

@@ -1,62 +1,67 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>{{ task.title }}</title>
+{% extends "base.html" %}
+{% block title %}{{ task.title }}{% endblock %}
 
-  <p>
-  <a href="{% url 'edit_task' task.id %}">✏️ Edit task</a>
-</p>
+{% block content %}
+  <div class="mb-3 d-flex justify-content-between align-items-center">
+    <a class="btn btn-link p-0" href="{% url 'project_detail' task.project.id %}">← Back to project</a>
+    <div class="d-flex gap-2">
+      <a class="btn btn-outline-secondary btn-sm" href="{% url 'edit_task' task.id %}">✏️ Edit</a>
+      <a class="btn btn-outline-danger btn-sm" href="{% url 'delete_task_confirm' task.id %}">🗑️ Delete</a>
+    </div>
+  </div>
 
-<p>
-  <a href="{% url 'delete_task_confirm' task.id %}">🗑️ Delete task</a>
-</p>
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h1 class="h4 mb-2">{{ task.title }}</h1>
 
-<h2>Update Status</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ status_form.as_p }}
-  <button type="submit" name="status_submit">Update Status</button>
-</form>
+      <div class="text-muted mb-3">
+        Priority: {{ task.get_priority_display }} · Status: {{ task.get_status_display }}
+        {% if task.due_date %} · Due: {{ task.due_date }}{% endif %}
+      </div>
 
-<hr>
+      {% if task.description %}
+        <p class="mb-0">{{ task.description }}</p>
+      {% endif %}
+    </div>
+  </div>
 
-</head>
-<body>
-  <p><a href="{% url 'project_detail' task.project.id %}">← Back to project</a></p>
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h2 class="h6 mb-3">Update status</h2>
+      <form method="post">
+        {% csrf_token %}
+        {{ status_form.as_p }}
+        <button class="btn btn-primary btn-sm" type="submit" name="status_submit">Update Status</button>
+      </form>
+    </div>
+  </div>
 
-  <h1>{{ task.title }}</h1>
-  <p><strong>Status:</strong> {{ task.get_status_display }}</p>
-  <p><strong>Priority:</strong> {{ task.get_priority_display }}</p>
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h2 class="h6 mb-3">Add a comment</h2>
+      <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-success btn-sm" type="submit">Post Comment</button>
+      </form>
+    </div>
+  </div>
 
-  {% if task.due_date %}
-    <p><strong>Due:</strong> {{ task.due_date }}</p>
-  {% endif %}
-
-  {% if task.description %}
-    <p>{{ task.description }}</p>
-  {% endif %}
-
-  <hr>
-
-  <h2>Add a comment</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Post Comment</button>
-  </form>
-
-  <hr>
-
-  <h2>Comments</h2>
-  <ul>
-    {% for c in comments %}
-      <li>
-        <strong>{{ c.author.username }}</strong> ({{ c.created_at }})<br>
-        {{ c.body }}
-      </li>
-    {% empty %}
-      <li>No comments yet.</li>
-    {% endfor %}
-  </ul>
-</body>
-</html>
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h2 class="h6 mb-3">Comments</h2>
+      <ul class="list-group list-group-flush">
+        {% for c in comments %}
+          <li class="list-group-item">
+            <div class="small text-muted mb-1">
+              <strong>{{ c.author.username }}</strong> · {{ c.created_at }}
+            </div>
+            <div>{{ c.body }}</div>
+          </li>
+        {% empty %}
+          <li class="list-group-item">No comments yet.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+{% endblock %}
