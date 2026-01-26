@@ -32,6 +32,28 @@
 
       <ul class="list-group list-group-flush">
         {% for task in tasks %}
+        <div class="mb-3 d-flex gap-2 flex-wrap">
+  <a class="btn {% if status_filter == 'ALL' %}btn-primary{% else %}btn-outline-primary{% endif %}"
+     href="{% url 'project_detail' project.id %}">
+    All
+  </a>
+
+  <a class="btn {% if status_filter == 'TODO' %}btn-primary{% else %}btn-outline-primary{% endif %}"
+     href="{% url 'project_detail' project.id %}?status=TODO">
+    To Do
+  </a>
+
+  <a class="btn {% if status_filter == 'DOING' %}btn-primary{% else %}btn-outline-primary{% endif %}"
+     href="{% url 'project_detail' project.id %}?status=DOING">
+    Doing
+  </a>
+
+  <a class="btn {% if status_filter == 'DONE' %}btn-primary{% else %}btn-outline-primary{% endif %}"
+     href="{% url 'project_detail' project.id %}?status=DONE">
+    Done
+  </a>
+</div>
+
           <li class="list-group-item">
             <div class="d-flex justify-content-between align-items-start gap-3">
               <div>

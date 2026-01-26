@@ -12,7 +12,8 @@ def dashboard(request):
 @login_required(login_url="/admin/login/")
 def project_detail(request, project_id):
     project = get_object_or_404(Project, id=project_id, owner=request.user)
-
+    
+    #Create task (POST)
     if request.method == "POST":
         form = TaskForm(request.POST)
         if form.is_valid():
@@ -23,8 +24,13 @@ def project_detail(request, project_id):
     else:
         form = TaskForm()
 
-    tasks = project.tasks.all().order_by("-created_at")
-    return render(request, "projects/project_detail.html", {"project": project, "tasks": tasks, "form": form,})
+    status = request.GET.get("status", "ALL")
+    tasks_qs = project.tasks.all().order_by("-created_at")
+    if status in {"TODO", "DOING", "DONE"}:
+        tasks_qs = tasks_qs.filter(status=status)
+
+    return render(request, "projects/project_detail.html", {"project": project, "tasks": tasks_qs, "form": form, "status_filter": status,  # so template can highlight active filter 
+                                                            })
 
 @login_required(login_url="/admin/login/")
 def create_project(request):
