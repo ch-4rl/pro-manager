@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     "projects",
     "tasks",
+    "accounts",
 ]
 
 MIDDLEWARE = [
@@ -125,8 +126,9 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-LOGIN_URL = "/admin/login/"
+LOGIN_URL = "/login/"
 LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/login/"
 
 STATIC_URL = "static/"
 

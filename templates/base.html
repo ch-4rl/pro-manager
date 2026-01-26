@@ -23,10 +23,12 @@
         <div class="ms-auto">
           {% if user.is_authenticated %}
             <span class="navbar-text me-3">Hi, {{ user.username }}</span>
-            <a class="btn btn-outline-light btn-sm" href="/admin/logout/">Logout</a>
+            <a class="btn btn-outline-light btn-sm" href="{% url 'logout' %}">Logout</a>
           {% else %}
-            <a class="btn btn-outline-light btn-sm" href="/admin/login/">Login</a>
+            <a class="btn btn-outline-light btn-sm me-2" href="{% url 'login' %}">Login</a>
+            <a class="btn btn-primary btn-sm" href="{% url 'signup' %}">Sign up</a>
           {% endif %}
+
         </div>
       </div>
     </nav>
