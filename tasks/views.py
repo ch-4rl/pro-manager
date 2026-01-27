@@ -5,6 +5,8 @@ from django.views.decorators.http import require_POST
 from .models import Task
 from .forms import CommentForm, TaskStatusForm
 from .forms import TaskForm
+from projects.models import ProjectMembership
+
 
 @login_required(login_url="/admin/login/")
 def task_detail(request, task_id):
@@ -48,8 +50,10 @@ def update_task_status(request, task_id):
     task = get_object_or_404(Task, id=task_id)
 
     # Permission: only project owner can update
-    if task.project.owner != request.user:
-        return redirect("dashboard")
+    is_member = ProjectMembership.objects.filter(project=task.project, user=request.user).exists()
+    if task.project.owner != request.user and not is_member:
+      return redirect("dashboard")
+
 
     status = request.POST.get("status")
     allowed = {choice[0] for choice in Task.STATUS_CHOICES}
@@ -64,8 +68,10 @@ def edit_task(request, task_id):
     task = get_object_or_404(Task, id=task_id)
 
     # Permission: only project owner can edit
-    if task.project.owner != request.user:
-        return redirect("dashboard")
+    is_member = ProjectMembership.objects.filter(project=task.project, user=request.user).exists()
+    if task.project.owner != request.user and not is_member:
+     return redirect("dashboard")
+
 
     if request.method == "POST":
         form = TaskForm(request.POST, instance=task)
@@ -81,8 +87,10 @@ def edit_task(request, task_id):
 def delete_task_confirm(request, task_id):
     task = get_object_or_404(Task, id=task_id)
 
-    if task.project.owner != request.user:
-        return redirect("dashboard")
+    is_member = ProjectMembership.objects.filter(project=task.project, user=request.user).exists()
+    if task.project.owner != request.user and not is_member:
+     return redirect("dashboard")
+
 
     return render(request, "tasks/delete_task_confirm.html", {"task": task})
 
@@ -92,8 +100,10 @@ def delete_task_confirm(request, task_id):
 def delete_task(request, task_id):
     task = get_object_or_404(Task, id=task_id)
 
-    if task.project.owner != request.user:
-        return redirect("dashboard")
+    is_member = ProjectMembership.objects.filter(project=task.project, user=request.user).exists()
+    if task.project.owner != request.user and not is_member:
+     return redirect("dashboard")
+
 
     project_id = task.project.id
     task.delete()

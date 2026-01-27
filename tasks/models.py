@@ -21,7 +21,7 @@ class Task(models.Model):
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="TODO")
     priority = models.CharField(max_length=10, choices=PRIORITY_CHOICES, default="MED")
     due_date = models.DateField(null=True, blank=True)
-    assigned_to = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name="tasks")
+    assigned_to = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name="assigned_tasks",)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

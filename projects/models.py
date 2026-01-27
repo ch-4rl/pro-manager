@@ -9,3 +9,15 @@ class Project(models.Model):
 
     def __str__(self):
         return self.name
+    
+
+class ProjectMembership(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="memberships")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="project_memberships")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("project", "user")  # prevents duplicates
+
+    def __str__(self):
+        return f"{self.user.username} in {self.project.name}"
