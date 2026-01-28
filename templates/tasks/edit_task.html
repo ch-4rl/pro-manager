@@ -1,17 +1,25 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Edit Task</title>
-</head>
-<body>
-  <p><a href="{% url 'task_detail' task.id %}">← Back to task</a></p>
+{% extends "base.html" %}
+{% block title %}Edit Task{% endblock %}
 
-  <h1>Edit task: {{ task.title }}</h1>
+{% block content %}
+  <div class="mb-3">
+    <a class="btn btn-link p-0" href="{% url 'task_detail' task.id %}">← Back to task</a>
+  </div>
 
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Save Changes</button>
-  </form>
-</body>
-</html>
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h1 class="h4 mb-3">Edit task</h1>
+
+      <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <div class="d-flex gap-2">
+          <button class="btn btn-primary" type="submit">Save changes</button>
+          <a class="btn btn-outline-secondary" href="{% url 'task_detail' task.id %}">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}
+
