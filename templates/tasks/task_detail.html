@@ -15,8 +15,15 @@
       <h1 class="h4 mb-2">{{ task.title }}</h1>
 
       <div class="text-muted mb-3">
-        Priority: {{ task.get_priority_display }} · Status: {{ task.get_status_display }}
-        {% if task.due_date %} · Due: {{ task.due_date }}{% endif %}
+       Priority: {{ task.get_priority_display }}
+       · Status: {{ task.get_status_display }}
+       · Assigned to:
+       {% if task.assigned_to %}
+         {{ task.assigned_to.username }}
+       {% else %}
+         Unassigned
+       {% endif %}
+       {% if task.due_date %} · Due: {{ task.due_date }}{% endif %}
       </div>
 
       {% if task.description %}

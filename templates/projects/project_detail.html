@@ -68,8 +68,16 @@
                   {{ task.title }}
                 </a>
                 <div class="text-muted small">
-                  Priority: {{ task.get_priority_display }} · Status: {{ task.get_status_display }}
+                  Priority: {{ task.get_priority_display }}
+                  · Status: {{ task.get_status_display }}
+                  · Assigned to:
+                  {% if task.assigned_to %}
+                    {{ task.assigned_to.username }}
+                  {% else %}
+                    Unassigned
+                  {% endif %}
                 </div>
+
               </div>
 
               <form class="d-flex align-items-center gap-2" method="post" action="{% url 'update_task_status' task.id %}">
