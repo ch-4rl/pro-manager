@@ -11,16 +11,20 @@ from django.views.decorators.http import require_POST
 
 @login_required(login_url="/admin/login/")
 def dashboard(request):
-    projects = Project.objects.filter(owner=request.user)
+    projects = Project.objects.filter(
+        Q(owner=request.user) | Q(memberships__user=request.user)
+    ).distinct().order_by("-id")
+
     return render(request, "projects/dashboard.html", {"projects": projects})
 
 @login_required(login_url="/admin/login/")
 def project_detail(request, project_id):
-    projects = Project.objects.filter(
-           Q(owner=request.user) | Q(memberships__user=request.user)
-         ).distinct()
-
-         #id=project_id
+    project = get_object_or_404(
+     Project.objects.filter(
+        Q(owner=request.user) | Q(memberships__user=request.user)
+     ).distinct(),
+     id=project_id
+    )
     
     
     #Create task (POST)
