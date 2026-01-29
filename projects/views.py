@@ -8,6 +8,8 @@ from tasks.forms import TaskForm
 from django.contrib.auth.models import User
 from .forms import AddMemberForm
 from django.views.decorators.http import require_POST
+from django.contrib import messages
+
 
 @login_required(login_url="/admin/login/")
 def dashboard(request):
@@ -40,6 +42,8 @@ def project_detail(request, project_id):
             task = form.save(commit=False)
             task.project = project
             task.save()
+            messages.success(request, "Task created successfully.")
+
             return redirect("project_detail", project_id=project.id)
     else:
         form = TaskForm()
@@ -60,6 +64,8 @@ def create_project(request):
             project = form.save(commit=False)
             project.owner = request.user
             project.save()
+            messages.success(request, "Project created successfully.")
+
             return redirect("dashboard")
     else:
         form = ProjectForm()
@@ -84,6 +90,8 @@ def project_members(request, project_id):
                 message = "Owner is already part of the project."
             else:
                 ProjectMembership.objects.get_or_create(project=project, user=user)
+                messages.success(request, "Member added.")
+
                 return redirect("project_members", project_id=project.id)
 
     members = User.objects.filter(project_memberships__project=project).distinct()
@@ -101,6 +109,8 @@ def project_members(request, project_id):
 def remove_member(request, project_id, user_id):
     project = get_object_or_404(Project, id=project_id, owner=request.user)  # owner-only
     ProjectMembership.objects.filter(project=project, user_id=user_id).delete()
+    messages.success(request, "Member removed.")
+
     return redirect("project_members", project_id=project.id)
 
 # Create your views here.

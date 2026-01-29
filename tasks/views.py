@@ -6,6 +6,8 @@ from .models import Task
 from .forms import CommentForm, TaskStatusForm
 from .forms import TaskForm
 from projects.models import ProjectMembership
+from django.contrib import messages
+
 
 
 @login_required(login_url="/admin/login/")
@@ -22,6 +24,8 @@ def task_detail(request, task_id):
             status_form = TaskStatusForm(request.POST, instance=task)
             if status_form.is_valid():
                 status_form.save()
+                messages.success(request, "Task status updated.")
+
                 return redirect("task_detail", task_id=task.id)
         else:
             comment_form = CommentForm(request.POST)
@@ -30,6 +34,8 @@ def task_detail(request, task_id):
             comment.task = task
             comment.author = request.user
             comment.save()
+            messages.success(request, "Comment added.")
+
             return redirect("task_detail", task_id=task.id)
     else:
         status_form = TaskStatusForm(instance=task)
@@ -60,6 +66,8 @@ def update_task_status(request, task_id):
     if status in allowed:
         task.status = status
         task.save()
+        messages.success(request, "Task updated successfully.")
+
 
     return redirect("project_detail", project_id=task.project.id) 
 
@@ -107,4 +115,6 @@ def delete_task(request, task_id):
 
     project_id = task.project.id
     task.delete()
+    messages.success(request, "Task deleted successfully.")
+
     return redirect("project_detail", project_id=project_id)
