@@ -9,6 +9,13 @@
   <div class="card shadow-sm mb-4">
     <div class="card-body">
       <h1 class="h4 mb-1">{{ project.name }}</h1>
+      {% if user == project.owner %}
+         <div class="d-flex gap-2 mb-3">
+             <a class="btn btn-outline-primary btn-sm" href="{% url 'edit_project' project.id %}">Edit project</a>
+             <a class="btn btn-outline-primary btn-sm" href="{% url 'project_members' project.id %}">Manage members</a>
+         </div>
+      {% endif %}
+
       {% if project.description %}
         <p class="text-muted mb-0">{{ project.description }}</p>
       {% endif %}
@@ -20,6 +27,15 @@
           Manage members
       </a>
   {% endif %}
+
+  {% if user == project.owner %}
+     <div class="d-flex gap-2 mb-3">
+         <a class="btn btn-outline-primary btn-sm" href="{% url 'edit_project' project.id %}">Edit project</a>
+         <a class="btn btn-outline-primary btn-sm" href="{% url 'project_members' project.id %}">Manage members</a>
+         <a class="btn btn-outline-danger btn-sm" href="{% url 'delete_project_confirm' project.id %}">Delete project</a>
+     </div>
+  {% endif %}
+
 
 
   <div class="card shadow-sm mb-4">

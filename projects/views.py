@@ -113,4 +113,36 @@ def remove_member(request, project_id, user_id):
 
     return redirect("project_members", project_id=project.id)
 
+
+@login_required
+def edit_project(request, project_id):
+    project = get_object_or_404(Project, id=project_id, owner=request.user)  # owner-only
+
+    if request.method == "POST":
+        form = ProjectForm(request.POST, instance=project)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Project updated successfully.")
+            return redirect("project_detail", project_id=project.id)
+    else:
+        form = ProjectForm(instance=project)
+
+    return render(request, "projects/edit_project.html", {"project": project, "form": form})
+
+
+@login_required
+def delete_project_confirm(request, project_id):
+    project = get_object_or_404(Project, id=project_id, owner=request.user)  # owner-only
+    return render(request, "projects/delete_project_confirm.html", {"project": project})
+
+
+@require_POST
+@login_required
+def delete_project(request, project_id):
+    project = get_object_or_404(Project, id=project_id, owner=request.user)  # owner-only
+    project.delete()
+    messages.success(request, "Project deleted successfully.")
+    return redirect("dashboard")
+
+
 # Create your views here.

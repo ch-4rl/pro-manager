@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Edit Project{% endblock %}
+
+{% block content %}
+  <div class="mb-3">
+    <a class="btn btn-link p-0" href="{% url 'project_detail' project.id %}">← Back to project</a>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h1 class="h4 mb-3">Edit project</h1>
+
+      <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <div class="d-flex gap-2">
+          <button class="btn btn-primary" type="submit">Save changes</button>
+          <a class="btn btn-outline-secondary" href="{% url 'project_detail' project.id %}">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Delete Project{% endblock %}
+
+{% block content %}
+  <div class="mb-3">
+    <a class="btn btn-link p-0" href="{% url 'project_detail' project.id %}">← Back to project</a>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h1 class="h4 mb-2">Delete project?</h1>
+      <p class="mb-4">
+        Are you sure you want to delete <strong>{{ project.name }}</strong>?
+        This will delete its tasks and cannot be undone.
+      </p>
+
+      <form method="post" action="{% url 'delete_project' project.id %}" class="d-flex gap-2">
+        {% csrf_token %}
+        <button class="btn btn-danger" type="submit">Yes, delete</button>
+        <a class="btn btn-outline-secondary" href="{% url 'project_detail' project.id %}">Cancel</a>
+      </form>
+    </div>
+  </div>
+{% endblock %}
