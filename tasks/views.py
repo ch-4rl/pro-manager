@@ -7,6 +7,7 @@ from .forms import CommentForm, TaskStatusForm
 from .forms import TaskForm
 from projects.models import ProjectMembership
 from django.contrib import messages
+from django.db.models import Q
 
 
 
@@ -118,3 +119,19 @@ def delete_task(request, task_id):
     messages.success(request, "Task deleted successfully.")
 
     return redirect("project_detail", project_id=project_id)
+
+
+
+@login_required
+def my_tasks(request):
+    status = request.GET.get("status", "ALL")
+
+    tasks_qs = Task.objects.filter(assigned_to=request.user).select_related("project").order_by("-created_at")
+
+    if status in {"TODO", "DOING", "DONE"}:
+        tasks_qs = tasks_qs.filter(status=status)
+
+    return render(request, "tasks/my_tasks.html", {
+        "tasks": tasks_qs,
+        "status_filter": status,
+    })
